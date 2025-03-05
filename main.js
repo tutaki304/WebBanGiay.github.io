@@ -521,6 +521,34 @@ function clearCart(){
     localStorage.removeItem("cartItems");
 }
 
+// Add this to your loadCart or similar function
+function resetCart() {
+    // Reset cart items
+    const cartContent = document.querySelector('.cart-content');
+    if (cartContent) cartContent.innerHTML = '';
+    
+    // Reset total price
+    const totalPrice = document.querySelector('.total-price');
+    if (totalPrice) totalPrice.innerText = '0 $';
+    
+    // Reset cart icon
+    const cartIcon = document.querySelector('#cart-icons');
+    if (cartIcon) cartIcon.setAttribute('data-quantity', '0');
+    
+    // Clear localStorage
+    localStorage.removeItem('cartItems');
+    localStorage.setItem('cartTotal', '0');
+    localStorage.setItem('cartCount', '0');
+}
+
+// Call this function when loading the page
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if coming from payment page
+    if (document.referrer.includes('payment.html')) {
+        resetCart();
+    }
+});
+
 const payBtn = document.querySelector(".btn-buy");
 
 payBtn.addEventListener("click", () => {
@@ -534,7 +562,38 @@ payBtn.addEventListener("click", () => {
     .then((res) => res.json())
     .then((url) => {
         location.href = url;
-        clearCart();.320
+        clearCart();
     })
     .catch((err) => console.log(err));
+});
+
+// Thêm event listener cho nút Buy Now
+let buyBtn = document.querySelector(".btn-buy");
+buyBtn.addEventListener('click', function() {
+    // Lưu dữ liệu giỏ hàng vào localStorage
+    let cartContent = document.querySelector(".cart-content");
+    let cartBoxes = cartContent.getElementsByClassName("cart-box");
+    let cartItems = [];
+
+    for (let i = 0; i < cartBoxes.length; i++) {
+        let cartBox = cartBoxes[i];
+        let titleElement = cartBox.getElementsByClassName("cart-product-title")[0];
+        let priceElement = cartBox.getElementsByClassName("cart-price")[0];
+        let quantityElement = cartBox.getElementsByClassName("cart-quantity")[0];
+        let sizeElement = cartBox.querySelector("#cart-size");
+
+        let item = {
+            title: titleElement.innerText,
+            price: parseFloat(priceElement.innerText.replace("$", "")),
+            quantity: parseInt(quantityElement.value),
+            size: sizeElement ? sizeElement.value : "Default"
+        };
+        cartItems.push(item);
+    }
+
+    // Lưu vào localStorage
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+    // Chuyển hướng đến trang thanh toán
+    window.location.href = 'payment.html';
 });

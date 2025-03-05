@@ -1,0 +1,210 @@
+:root {
+    --primary-color: #16BF78;
+    --secondary-color: #14a868;
+    --text-color: #4E4D4D;
+    --bg-color: #ffffff;
+    --box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    max-width: 960px;
+    font-family: 'Poppins', sans-serif;
+    padding: 2rem;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.border-top { 
+    border-top: 1px solid #e5e5e5; 
+}
+.border-bottom { 
+    border-bottom: 1px solid #e5e5e5; 
+}
+
+.box-shadow { 
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); 
+}
+
+.lh-condensed { 
+    line-height: 1.25; 
+}
+
+/* Card Styling */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Form Elements */
+.form-control {
+    border-radius: 8px;
+    padding: 12px;
+    border: 2px solid #eee;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(22, 191, 120, 0.15);
+}
+
+/* Button Styling */
+.btn-success {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 25px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(22, 191, 120, 0.3);
+}
+
+.badge-success {
+    background-color: #16BF78;
+}
+
+.custom-select:focus,
+.form-control:focus {
+    border-color: #16BF78;
+    box-shadow: 0 0 0 0.2rem rgba(22, 191, 120, 0.25);
+}
+
+/* Payment Methods */
+.payment-methods {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.payment-method-item {
+    flex: 1;
+    padding: 15px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.payment-method-item:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(22, 191, 120, 0.05);
+}
+
+.payment-method-item.active {
+    border-color: var(--primary-color);
+    background-color: rgba(22, 191, 120, 0.1);
+}
+
+.payment-method-item img {
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+/* Cart Items */
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    background-color: rgba(22, 191, 120, 0.05);
+}
+
+.list-group-item strong {
+    color: var(--primary-color);
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+/* Total Price */
+.total-price {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.total-price strong {
+    font-size: 1.4em;
+    color: var(--primary-color);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Custom Radio Buttons */
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .payment-methods {
+        flex-direction: column;
+    }
+    
+    .container {
+        padding: 1rem;
+    }
+    
+    .btn-success {
+        width: 100%;
+    }
+}
+
+/* Success Animation */
+@keyframes submitSuccess {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-10px); opacity: 0; }
+}
+
+.form-submitting {
+    animation: submitSuccess 0.6s ease forwards;
+}
+
+/* Loading State */
+.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(22, 191, 120, 0.1),
+        transparent
+    );
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
