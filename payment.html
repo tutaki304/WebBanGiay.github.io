@@ -158,8 +158,84 @@
                 }
             }
 
+            // Add this after loadCart() function
+            function initializePromoCode() {
+                const promoInput = document.querySelector('input[placeholder="Promo code"]');
+                const applyButton = document.querySelector('.input-group-append .btn-success');
+                const PROMO_CODE = 'TUCODEDAO';
+                let isPromoApplied = false;
+
+                applyButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    if (isPromoApplied) {
+                        Swal.fire({
+                            title: 'Promo Code Already Applied',
+                            text: 'This code has already been used',
+                            icon: 'warning',
+                            confirmButtonColor: '#16BF78'
+                        });
+                        return;
+                    }
+
+                    const enteredCode = promoInput.value.trim().toUpperCase();
+                    
+                    if (enteredCode === PROMO_CODE) {
+                        const totalLi = document.querySelector('.list-group-item:last-child');
+                        const currentTotal = parseFloat(totalLi.querySelector('strong').innerText.replace('$', ''));
+                        const discountedTotal = (currentTotal * 0.9).toFixed(2);
+
+                        // Update total display with discount
+                        totalLi.remove(); // Remove old total
+
+                        // Add discount info
+                        const discountLi = document.createElement('li');
+                        discountLi.className = 'list-group-item discount-info';
+                        discountLi.innerHTML = `
+                            <div class="discount-badge">10% Discount Applied</div>
+                        `;
+                        document.getElementById('cart-items').appendChild(discountLi);
+
+                        // Add new total with original and discounted prices
+                        const newTotalLi = document.createElement('li');
+                        newTotalLi.className = 'list-group-item total-price';
+                        newTotalLi.innerHTML = `
+                            <div class="price-display">
+                                <span class="original-price">$${currentTotal.toFixed(2)}</span>
+                                <span class="discounted-price">$${discountedTotal}</span>
+                            </div>
+                        `;
+                        document.getElementById('cart-items').appendChild(newTotalLi);
+
+                        // Disable promo code input
+                        promoInput.disabled = true;
+                        applyButton.disabled = true;
+                        applyButton.innerHTML = '<i class="fas fa-check"></i> Applied';
+                        isPromoApplied = true;
+
+                        // Show success message
+                        Swal.fire({
+                            title: 'Promo Code Applied!',
+                            text: 'You got 10% off your order!',
+                            icon: 'success',
+                            confirmButtonColor: '#16BF78'
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Invalid Code',
+                            text: 'Please enter a valid promo code',
+                            icon: 'error',
+                            confirmButtonColor: '#16BF78'
+                        });
+                    }
+                });
+            }
+
             // Load cart when page loads
             loadCart();
+
+            // Add this line after loadCart();
+            initializePromoCode();
 
             // Update the form submission handler
             document.querySelector('form').addEventListener('submit', function(e) {
